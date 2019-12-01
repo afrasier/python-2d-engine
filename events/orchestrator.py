@@ -66,6 +66,8 @@ class Orchestrator():
         instance_id = id(instance)
         if event in self.registry and instance_id in self.registry.get(event):
             del self.registry.get(event)[instance_id]
+        
+        self.cleanup_registry()
 
     def unsubscribe_all(self, instance: object) -> None:
         '''
@@ -76,3 +78,11 @@ class Orchestrator():
         for value in self.registry.values():
             if instance_id in value:
                 del value[instance_id]
+
+        self.cleanup_registry()
+
+    def cleanup_registry(self) -> None:
+        '''
+        Removes any empty registry keys
+        '''
+        self.registry: Dict[str, Dict[int, Callable]] = {k: v for k, v in self.registry.items() if len(v.keys()) > 0}
