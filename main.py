@@ -60,7 +60,7 @@ def main():
     screen.blit(new_complex_image, (101, 202))
     pygame.display.flip()
 
-    time.sleep(20)
+    time.sleep(10)
 
 
 
