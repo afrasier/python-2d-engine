@@ -1,7 +1,10 @@
+import pygame
 import argparse
 import logging
 import logging.config
+import time
 from settings import config
+from imaging.palette import Palette
 
 from events import Orchestrator, Event
 
@@ -34,10 +37,30 @@ def main():
 
     logger.info("Configured logger")
 
-    orchestrator = Orchestrator.get_instance()
-    test = Test()
-    orchestrator.subscribe(Event.TEST_MESSAGE, test, test.print_it)
-    orchestrator.emit(Event.TEST_MESSAGE, "hellothere!")
+    pygame.init()
+
+    screen = pygame.display.set_mode((500, 500))
+    pygame.display.set_caption('test')
+
+    image = pygame.image.load('assets/testing/img/ball.jpg')
+    simple_image = pygame.image.load('assets/testing/img/ball_simple.jpg')
+    complex_image = pygame.image.load('assets/testing/img/ball_complex.jpg')
+    newHues = [0, 68, 44, 305]
+
+    palette = Palette(newHues)
+    new_image = palette.paint_image(image)
+    new_simple_image = palette.paint_image(simple_image)
+    new_complex_image = palette.paint_image(complex_image)
+
+    screen.blit(simple_image, (0, 0))
+    screen.blit(new_simple_image, (101, 0))
+    screen.blit(image, (0, 101))
+    screen.blit(new_image, (101, 101))
+    screen.blit(complex_image, (0, 202))
+    screen.blit(new_complex_image, (101, 202))
+    pygame.display.flip()
+
+    time.sleep(10)
 
 
 
