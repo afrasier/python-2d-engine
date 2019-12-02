@@ -45,12 +45,14 @@ def main():
     image = pygame.image.load('assets/testing/img/ball.jpg')
     simple_image = pygame.image.load('assets/testing/img/ball_simple.jpg')
     complex_image = pygame.image.load('assets/testing/img/ball_complex.jpg')
+    trans_image = pygame.image.load('assets/testing/img/ball_transparent.png')
     newHues = [0, 68, 44, 305]
 
     palette = Palette(newHues)
     new_image = palette.paint_image(image)
     new_simple_image = palette.paint_image(simple_image)
     new_complex_image = palette.paint_image(complex_image)
+    new_trans_image = palette.paint_image(trans_image)
 
     screen.blit(simple_image, (0, 0))
     screen.blit(new_simple_image, (101, 0))
@@ -58,6 +60,8 @@ def main():
     screen.blit(new_image, (101, 101))
     screen.blit(complex_image, (0, 202))
     screen.blit(new_complex_image, (101, 202))
+    screen.blit(trans_image, (0, 303))
+    screen.blit(new_trans_image, (101, 303))
     pygame.display.flip()
 
     time.sleep(10)

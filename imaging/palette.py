@@ -43,10 +43,13 @@ class Palette():
         '''
         Paints the source image with this palette, returning a new surface
         '''
+        alphas = pygame.surfarray.array_alpha(image)
         pixel_array = self.convert_pixel_array(pygame.surfarray.array3d(image))
-        surface = pygame.Surface(pixel_array.shape[:2])
-        pygame.surfarray.blit_array(surface, pixel_array)
-
+        surface = pygame.Surface.convert_alpha(pygame.surfarray.make_surface(pixel_array))
+        surface_alpha_reference = pygame.surfarray.pixels_alpha(surface)
+        np.copyto(surface_alpha_reference, alphas)
+        del surface_alpha_reference # Unlock the surface by removing the reference to alphas
+        del alphas
         return surface
 
     def convert_pixel_array(self, pixel_array: np.ndarray) -> np.ndarray:
