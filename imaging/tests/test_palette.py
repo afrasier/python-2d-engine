@@ -19,7 +19,7 @@ def pixel_values():
     return pixel_values
 
 def test_convert_pixel_array(pixel_values: np.ndarray):
-    palette = Palette([0, 120, 240, 180])
+    palette = Palette([0, 120, 240, 180], tolerance=0)
 
     expected = np.array([
         [
@@ -36,7 +36,7 @@ def test_convert_pixel_array(pixel_values: np.ndarray):
     assert np.array_equal(new_pixel_values, expected)
 
 def test_convert_pixel_array_single_color(pixel_values: np.ndarray):
-    palette = Palette([0])
+    palette = Palette([0], tolerance=0)
 
     expected = np.array([
         [
@@ -53,14 +53,14 @@ def test_convert_pixel_array_single_color(pixel_values: np.ndarray):
     assert np.array_equal(new_pixel_values, expected)
 
 def test_convert_pixel_array_no_colors(pixel_values: np.ndarray):
-    palette = Palette([])
+    palette = Palette([], tolerance=0)
 
     new_pixel_values = palette.convert_pixel_array(pixel_values)
 
     assert np.array_equal(new_pixel_values, pixel_values)
 
 def test_paint_image(pixel_values: np.ndarray):
-    palette = Palette([0, 120, 240, 180])
+    palette = Palette([0, 120, 240, 180], tolerance=0)
 
     expected = np.array([
         [
