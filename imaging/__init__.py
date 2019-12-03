@@ -1,4 +1,5 @@
 from typing import List
+from imaging.palette import Palette
 
 from enum import Enum
 

@@ -3,8 +3,7 @@ import colorsys
 
 import numpy as np
 
-from imaging import KEY_HUES_LIST
-from typing import List, Tuple
+from typing import List, Tuple, Dict
 
 class PaletteColor():
     __slots__ = ['h', 's', 'v']
@@ -32,20 +31,32 @@ class Palette():
     '''
     Palette class represents a particular palette, with logic to support re-coloring sprites
     '''
-    def __init__(self, hues: List[int], tolerance: int = 3):
+    def __init__(self, hues: Dict[int, int], tolerance: int = 3):
         '''
         Specify a tolerance to give some wiggle room to the math
         '''
-        self.hues: List[int] = hues
+        self.hues: Dict[int: int] = hues
         self.tolerance: int = tolerance
+
+        # Expand our dict to include tolerances
+        if tolerance > 0:
+            base_hues = list(self.hues.keys())
+            for hue in base_hues:
+                for tolerated_hue in range((hue - tolerance), (hue + tolerance + 1)):
+                    target_hue = self.hues.get(hue) - (hue - tolerated_hue)
+                    self.hues[tolerated_hue % 360] = target_hue % 360
 
     def paint_image(self, image: pygame.Surface) -> pygame.Surface:
         '''
         Paints the source image with this palette, returning a new surface
         '''
+        # Store the image's alpha
         alphas = pygame.surfarray.array_alpha(image)
+        # Convert image to pixel array and swap colors
         pixel_array = self.convert_pixel_array(pygame.surfarray.array3d(image))
+        # Remap pixel array to surface and add alpha channel
         surface = pygame.Surface.convert_alpha(pygame.surfarray.make_surface(pixel_array))
+        # Copy original alpha to new surface's alpha
         surface_alpha_reference = pygame.surfarray.pixels_alpha(surface)
         np.copyto(surface_alpha_reference, alphas)
         del surface_alpha_reference # Unlock the surface by removing the reference to alphas
@@ -78,22 +89,10 @@ class Palette():
         '''
         Converts a pixel based upon HSL value
         '''
-        hlv = colorsys.rgb_to_hsv(*color)
-        true_hue = round(hlv[0] * 360.0)
-        try:
-            for i in range(0, len(KEY_HUES_LIST)):
-                if i >= len(self.hues):
-                    return color
-
-                key_hue = KEY_HUES_LIST[i]
-
-                if (key_hue - self.tolerance) <= true_hue <= (key_hue + self.tolerance):
-                    new_hue = self.hues[i] - (key_hue - true_hue)
-                    new_hue = min(max(0, new_hue), 360) / 360.0
-                    new_color = colorsys.hsv_to_rgb(new_hue, hlv[1], hlv[2])
-                    return new_color
-            return color
-        except IndexError: # pragma: no cover
-            return color
-        except ValueError: # pragma: no cover
-            return color
+        (h, l, v) = colorsys.rgb_to_hsv(*color)
+        true_hue = round(h * 360.0)
+        return colorsys.hsv_to_rgb(
+            self.hues.get(true_hue, true_hue) / 360.0,
+            l,
+            v
+        )

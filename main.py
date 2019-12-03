@@ -4,7 +4,7 @@ import logging
 import logging.config
 import time
 from settings import config
-from imaging.palette import Palette
+from imaging import Palette, KEY_HUES_LIST
 
 from events import Orchestrator, Event
 
@@ -17,10 +17,6 @@ A Darkest Dungeon-like game inspired by the Stormlight Archive by Brandon Sander
 '''
 The main method handles initial configurations and parses any command line arguments
 '''
-class Test():
-    def print_it(self, x):
-        print(f"{x}, for sure!")
-
 def main():
     # Set up our argument parser for handing command line options
     parser = argparse.ArgumentParser(description=f"{config.APP_DATA.get('name')} - v{config.APP_DATA.get('version')}")
@@ -46,13 +42,20 @@ def main():
     simple_image = pygame.image.load('assets/testing/img/ball_simple.jpg')
     complex_image = pygame.image.load('assets/testing/img/ball_complex.jpg')
     trans_image = pygame.image.load('assets/testing/img/ball_transparent.png')
-    newHues = [0, 68, 44, 305]
+    mage_image = pygame.image.load('assets/testing/img/mage_ss.png')
+    newHues = {
+        240: 0,
+        200: 64,
+        160: 44,
+        100: 305
+    }
 
     palette = Palette(newHues)
     new_image = palette.paint_image(image)
     new_simple_image = palette.paint_image(simple_image)
     new_complex_image = palette.paint_image(complex_image)
     new_trans_image = palette.paint_image(trans_image)
+    new_mage_image = palette.paint_image(mage_image)
 
     screen.blit(simple_image, (0, 0))
     screen.blit(new_simple_image, (101, 0))
@@ -62,6 +65,8 @@ def main():
     screen.blit(new_complex_image, (101, 202))
     screen.blit(trans_image, (0, 303))
     screen.blit(new_trans_image, (101, 303))
+    screen.blit(mage_image, (0, 404))
+    screen.blit(new_mage_image, (201, 404))
     pygame.display.flip()
 
     time.sleep(10)
