@@ -10,7 +10,7 @@ class UtilTestLogger:
         self.logger = logging.getLogger()
 
         self.EVENT_HANDLERS = {
-            "noop": self.log_it,
+            "noop": self.log_with_z,
             "noop2": [self.log_with_x, self.log_with_y],
         }
 
@@ -22,6 +22,9 @@ class UtilTestLogger:
 
     def log_with_y(self, x):
         self.logger.info(f"{x}y")
+
+    def log_with_z(self, x):
+        self.logger.info(f"{x}z")
 
 
 @pytest.fixture
@@ -51,9 +54,29 @@ def test_emit_no_event(caplog: LogCaptureFixture, fresh_orchestrator: Orchestrat
     assert "Got event noop, but is not in registry" in caplog.text
 
 
-def test_subscribe_emit_unsubscribe(
-    caplog: LogCaptureFixture, fresh_orchestrator: Orchestrator
-):
+def test_unsubscribe_no_subscriber(caplog: LogCaptureFixture, fresh_orchestrator: Orchestrator):
+    """
+    Test unsubscribing with no subscriber
+    """
+    with caplog.at_level(logging.INFO):
+        testlogger: UtilTestLogger = UtilTestLogger(caplog)
+        fresh_orchestrator.subscribe("noop", testlogger, testlogger.log_it)
+
+        fresh_orchestrator.unsubscribe("noop", testlogger, testlogger.log_with_x)
+
+        assert "Cannot locate subscription for unsubscribe" in caplog.text
+
+        caplog.clear()
+
+        fresh_orchestrator.unsubscribe("noop", testlogger)
+        fresh_orchestrator.emit("noop", "test")
+
+        assert "test" not in caplog.text
+
+        caplog.clear()
+
+
+def test_subscribe_emit_unsubscribe(caplog: LogCaptureFixture, fresh_orchestrator: Orchestrator):
     """
     Test subscribing, emitting, and unsubscribing flow
     """
@@ -96,13 +119,13 @@ def test_subscribe_all(caplog: LogCaptureFixture, fresh_orchestrator: Orchestrat
     with caplog.at_level(logging.INFO):
         testlogger: UtilTestLogger = UtilTestLogger(caplog)
         fresh_orchestrator.subscribe_all(testlogger)
-
+        print(fresh_orchestrator.registry)
         caplog.clear()
 
         fresh_orchestrator.emit("noop", "test")
 
-        assert "test" in caplog.text
-        assert "textx" not in caplog.text
+        assert "testz" in caplog.text
+        assert "testx" not in caplog.text
         assert "testy" not in caplog.text
 
         fresh_orchestrator.unsubscribe("noop", testlogger)
@@ -110,8 +133,8 @@ def test_subscribe_all(caplog: LogCaptureFixture, fresh_orchestrator: Orchestrat
 
         fresh_orchestrator.emit("noop2", "test")
 
-        assert "test" not in caplog.text
-        assert "textx" in caplog.text
+        assert "testz" not in caplog.text
+        assert "testx" in caplog.text
         assert "testy" in caplog.text
 
         caplog.clear()

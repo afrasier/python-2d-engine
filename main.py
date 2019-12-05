@@ -19,19 +19,13 @@ The main method handles initial configurations and parses any command line argum
 
 def main():
     # Set up our argument parser for handing command line options
-    parser = argparse.ArgumentParser(
-        description=f"{config.APP_DATA.get('name')} - v{config.APP_DATA.get('version')}"
-    )
+    parser = argparse.ArgumentParser(description=f"{config.APP_DATA.get('name')} - v{config.APP_DATA.get('version')}")
     parser.add_argument("-ll", "--log-level", help="Set the default log level")
-    parser.add_argument(
-        "-dd", "--dev-demo", help="Run the specified dev demo", choices=DEV_DEMOS.keys()
-    )
+    parser.add_argument("-dd", "--dev-demo", help="Run the specified dev demo", choices=DEV_DEMOS.keys())
 
     args = parser.parse_args()
 
-    print(
-        f"Starting {config.APP_DATA.get('name')} v{config.APP_DATA.get('version')}..."
-    )
+    print(f"Starting {config.APP_DATA.get('name')} v{config.APP_DATA.get('version')}...")
 
     logging.config.dictConfig(config.LOGGING)
     logger = logging.getLogger()  # Use __name__ in subpackages

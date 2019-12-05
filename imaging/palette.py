@@ -23,7 +23,7 @@ class PaletteColor:
         Returns the RGB tuple for this color
         """
         (r, g, b) = colorsys.hsv_to_rgb(self.h, self.s, self.v)
-        return (int(r * 255.0), int(g * 255.0), int(b * 255.0))
+        return (round(r * 255.0), round(g * 255.0), round(b * 255.0))
 
 
 class Palette:
@@ -37,7 +37,7 @@ class Palette:
         """
         Specify a tolerance to give some wiggle room to the math
         """
-        self.hues: Dict[int:int] = hues
+        self.hues: Dict[int, int] = hues
         self.tolerance: int = tolerance
 
         # Expand our dict to include tolerances
@@ -57,9 +57,7 @@ class Palette:
         # Convert image to pixel array and swap colors
         pixel_array = self.convert_pixel_array(pygame.surfarray.array3d(image))
         # Remap pixel array to surface and add alpha channel
-        surface = pygame.Surface.convert_alpha(
-            pygame.surfarray.make_surface(pixel_array)
-        )
+        surface = pygame.Surface.convert_alpha(pygame.surfarray.make_surface(pixel_array))
         # Copy original alpha to new surface's alpha
         surface_alpha_reference = pygame.surfarray.pixels_alpha(surface)
         np.copyto(surface_alpha_reference, alphas)
@@ -89,12 +87,12 @@ class Palette:
 
         return pixel_array
 
-    def convert_pixel(
-        self, color: Tuple[float, float, float]
-    ) -> Tuple[float, float, float]:
+    def convert_pixel(self, color: Tuple[float, float, float]) -> Tuple[float, float, float]:
         """
         Converts a pixel based upon HSL value
         """
         (h, l, v) = colorsys.rgb_to_hsv(*color)
         true_hue = round(h * 360.0)
-        return colorsys.hsv_to_rgb(self.hues.get(true_hue, true_hue) / 360.0, l, v)
+        (r, g, b) = colorsys.hsv_to_rgb(self.hues.get(true_hue, true_hue) / 360.0, l, v)
+        return (round(r), round(g), round(b))
+
