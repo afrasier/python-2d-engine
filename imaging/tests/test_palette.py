@@ -16,9 +16,9 @@ def pixel_values():
 
     key_hues.append([0, 0, 0])
 
-    pv = np.array([key_hues])
+    pixels = np.array([key_hues])
 
-    return pv
+    return pixels
 
 
 def test_convert_pixel_array(pixel_values: np.ndarray):
