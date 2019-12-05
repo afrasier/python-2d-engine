@@ -34,13 +34,13 @@ class Orchestrator:
             key: {
                 event_type: {
                     instance_id: {
-                        subscriber_id: callable
+                        subscriber_name: callable
                     }
                 }
             }
         """
         self.logger: logging.Logger = logging.getLogger(__name__)
-        self.registry: Dict[str, Dict[int, Dict[int, Callable]]] = {}
+        self.registry: Dict[str, Dict[int, Dict[str, Callable]]] = {}
 
     def emit(self, event: str, *args, **kwargs) -> None:
         """
@@ -65,7 +65,7 @@ class Orchestrator:
         if instance_id not in self.registry[event]:
             self.registry[event][instance_id] = {}
 
-        subscriber_id = id(subscriber)
+        subscriber_id = subscriber.__name__
         self.registry[event][instance_id][subscriber_id] = subscriber
 
     def unsubscribe(self, event: str, instance: object, subscriber: Callable = None) -> None:
@@ -79,10 +79,10 @@ class Orchestrator:
         # Remove the specific subscriber if specified, otherwise, remove all subscribers for that instance
         if event in self.registry and instance_id in self.registry.get(event):
             if subscriber is not None:
-                subscriber_id = id(subscriber)
+                subscriber_id = subscriber.__name__
                 if subscriber_id not in self.registry.get(event).get(instance_id):
-                    self.logger.warning(
-                        f"Cannot locate subscription for unsubscribe: {instance} - {subscriber} :: {event}"
+                    self.logger.info(
+                        f"Cannot locate subscription for unsubscribe: {instance} - {subscriber_id} :: {event}"
                     )
                     return
 

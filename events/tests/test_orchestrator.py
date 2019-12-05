@@ -75,6 +75,17 @@ def test_unsubscribe_no_subscriber(caplog: LogCaptureFixture, fresh_orchestrator
 
         caplog.clear()
 
+        fresh_orchestrator.subscribe("noop", testlogger, testlogger.log_with_z)
+        fresh_orchestrator.subscribe("noop", testlogger, testlogger.log_with_x)
+        fresh_orchestrator.unsubscribe("noop", testlogger, testlogger.log_with_z)
+        print(fresh_orchestrator.registry)
+        fresh_orchestrator.emit("noop", "test")
+
+        assert "testz" not in caplog.text
+        assert "testx" in caplog.text
+
+        caplog.clear()
+
 
 def test_subscribe_emit_unsubscribe(caplog: LogCaptureFixture, fresh_orchestrator: Orchestrator):
     """
