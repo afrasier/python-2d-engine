@@ -68,9 +68,11 @@ def dev_viewport():
     dvpm = DemoViewportMover(viewport)
 
     guy = DemoRenderable("assets/testing/img/guy.png")
-    guy.position.shift(50, 50)
+    guy.position.shift(250, 250)
     background = DemoRenderable("assets/testing/img/background.png")
+    background.position.shift(250, 250)
     clouds = DemoRenderable("assets/testing/img/clouds_mid.png")
+    clouds.position.shift(250, 250)
 
     window.orchestrator.subscribe(Event.KEYS_PRESSED, dvpm, dvpm.handle_keypressed)
     window.orchestrator.subscribe(Event.KEYS_PRESSED, guy, guy.handle_keypressed)
