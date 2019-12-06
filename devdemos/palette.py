@@ -31,6 +31,12 @@ def dev_palette():
     new_trans_image = palette.paint_image(trans_image)
     new_mage_image = palette.paint_image(mage_image)
 
+    # Full red
+    red_hues = {i: 0 for i in range(0, 360)}
+    palette_red = Palette(red_hues, tolerance=0)
+    button_image = pygame.image.load("assets/testing/img/button_test.png")
+    new_button_image = palette_red.paint_image(button_image)
+
     screen.blit(simple_image, (0, 0))
     screen.blit(new_simple_image, (101, 0))
     screen.blit(image, (0, 101))
@@ -41,6 +47,9 @@ def dev_palette():
     screen.blit(new_trans_image, (101, 303))
     screen.blit(mage_image, (0, 404))
     screen.blit(new_mage_image, (201, 404))
+
+    screen.blit(button_image, (200, 0))
+    screen.blit(new_button_image, (301, 0))
     pygame.display.flip()
 
     time.sleep(10)
