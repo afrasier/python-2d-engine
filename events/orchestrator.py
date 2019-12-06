@@ -48,7 +48,8 @@ class Orchestrator:
         """
         self.logger.debug(f"Event emitted {event} with args {args}; kwargs {kwargs}")
         if event not in self.registry:
-            self.logger.warning(f"Got event {event}, but is not in registry")
+            self.logger.debug(f"Got event {event}, but is not in registry")
+            return
         for instance_subscribers in self.registry.get(event, {}).values():
             for subscriber in instance_subscribers.values():
                 subscriber(*args, **kwargs)

@@ -1,5 +1,6 @@
 import pygame
 
+from interface import Viewport
 from events import Event, Orchestrator
 from threading import Thread
 
@@ -13,6 +14,8 @@ class Window:
         pygame.mixer.pre_init(44100, -16, 2, 3072)
         pygame.mixer.init()
         pygame.init()
+
+        self.viewport: Viewport = None
 
         # Create screen
         self.screen: pygame.Surface = pygame.display.set_mode((0, 0))
@@ -36,7 +39,9 @@ class Window:
                     # Broadcast the pygame event via the orchestrator
                     self.orchestrator.emit(event.type, event)
 
-            # Blit viewport here
+            # Render everything our viewport has
+            if self.viewport:
+                self.viewport.blit(self.screen)
 
             pygame.display.flip()
             pygame.time.Clock.tick(60)  # Max out at 60 FPS

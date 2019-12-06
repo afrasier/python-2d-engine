@@ -3,7 +3,7 @@ import pygame
 from enum import IntEnum
 from interface import Renderable, Position
 
-from typing import Dict
+from typing import Dict, List
 
 
 class Layer:
@@ -54,16 +54,54 @@ class Viewport:
     """
     viewport.py
 
-    Represents a viewport; all items wishing to be rendered should be registered with this class
+    Represents a viewport; all items wishing to be rendered should be registered with this class via a layer
 
     Items are rendered based upon their layer, in the order they were added to that layer
+
+    Priority is such that 0 is rendered on top of 1, and so on
     """
 
     def __init__(self):
         self.position: Position = Position()
+        self.layers: Dict[int, Layer] = {}
+        self.ordered_priorities: List[int] = []
+
+    def add_layer(self, priority: int, layer: Layer) -> bool:
+        """
+        Adds a layer to this viewport, returns true if the layer was successfully added
+        """
+        if priority not in self.layers:
+            self.layers[priority] = layer
+            self.__update_priorities()
+            return True
+
+        return False
+
+    def remove_layer(self, priority: int = None, layer: Layer = None) -> None:
+        """
+        Removes a layer either by priority or by layer
+        """
+        if priority:
+            del self.layers[priority]
+        elif layer:
+            try:
+                # Quick-delete by value: look up value index in value list and delete key at that index in key list
+                index = list(self.layers.values()).index(layer)
+                del self.layers[list(self.layers.keys())[index]]
+                self.__update_priorities()
+            except ValueError:
+                # This layer isn't in this viewport
+                return
+
+    def __update_priorities(self) -> None:
+        """
+        Updates the ordered priority list
+        """
+        self.ordered_priorities = sorted(list(self.layers.keys()), reverse=True)
 
     def blit(self, surface: pygame.Surface) -> None:
         """
-        Draws all renderables on screen 
+        Draws all layers on screen 
         """
-        pass
+        for priority in self.ordered_priorities:
+            self.layers[priority].blit(surface)
