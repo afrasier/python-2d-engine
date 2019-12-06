@@ -50,8 +50,9 @@ def test_emit_no_event(caplog: LogCaptureFixture, fresh_orchestrator: Orchestrat
     """
     Test emitting an event with no subscribers
     """
-    fresh_orchestrator.emit("noop", "message")
-    assert "Got event noop, but is not in registry" in caplog.text
+    with caplog.at_level(logging.DEBUG):
+        fresh_orchestrator.emit("noop", "message")
+        assert "Got event noop, but is not in registry" in caplog.text
 
 
 def test_unsubscribe_no_subscriber(caplog: LogCaptureFixture, fresh_orchestrator: Orchestrator):
@@ -107,7 +108,6 @@ def test_subscribe_emit_unsubscribe(caplog: LogCaptureFixture, fresh_orchestrato
         fresh_orchestrator.emit("tlog", msg)
 
         assert msg not in caplog.text
-        assert "Got event tlog, but is not in registry" in caplog.text
         caplog.clear()
 
         fresh_orchestrator.emit("tlog2", msg)
@@ -119,7 +119,6 @@ def test_subscribe_emit_unsubscribe(caplog: LogCaptureFixture, fresh_orchestrato
         fresh_orchestrator.emit("tlog2", msg)
 
         assert msg not in caplog.text
-        assert "Got event tlog2, but is not in registry" in caplog.text
         caplog.clear()
 
 

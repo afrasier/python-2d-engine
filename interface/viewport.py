@@ -1,9 +1,10 @@
 import pygame
 
 from enum import IntEnum
-from interface import Renderable, Position
+from interface import Position
+from interface.renderable import Renderable
 
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 
 class Layer:
@@ -11,9 +12,9 @@ class Layer:
     Layer represents an individual layer of renderables
     """
 
-    def __init__(self, motion_scale: float = 1):
+    def __init__(self, motion_scale: Tuple[float, float] = (1, 1)):
         # Scales the motion of the camera (useful for parallax or static items (scale = 0))
-        self.motion_scale: float = motion_scale
+        self.motion_scale: Tuple[float, float] = motion_scale
         # Dictionary of renderables organized by id (dictionaries maintain their order in Python 3.6)
         self.renderables: Dict[int, Renderable] = {}
 
@@ -38,8 +39,8 @@ class Layer:
         """
         for renderable in self.renderables.values():
             rendering_position = (
-                renderable.position.x - viewport_position.x,
-                renderable.position.y - viewport_position.y,
+                renderable.position.x - (viewport_position.x * self.motion_scale[0]),
+                renderable.position.y - (viewport_position.y * self.motion_scale[1]),
             )
 
             # Since this rendering position would mark the top left of the renderable, we can do a quick
@@ -104,4 +105,4 @@ class Viewport:
         Draws all layers on screen 
         """
         for priority in self.ordered_priorities:
-            self.layers[priority].blit(surface)
+            self.layers[priority].blit(self.position, surface)
