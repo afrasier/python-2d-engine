@@ -82,7 +82,7 @@ class Viewport:
         """
         Removes a layer either by priority or by layer
         """
-        if priority:
+        if priority and priority in self.layers:
             del self.layers[priority]
         elif layer:
             try:

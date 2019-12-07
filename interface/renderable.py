@@ -14,11 +14,11 @@ class Renderable(ABC):
         """
         Should return the renderable surface for blitting to the screen
         """
-        pass
+        raise NotImplementedError
 
     @abc.abstractproperty
     def position(self) -> Position:
         """
         Should return the renderable's position
         """
-        pass
+        raise NotImplementedError
