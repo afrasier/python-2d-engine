@@ -84,4 +84,3 @@ class Window:
             # Broadcast all currently held down keys
             self.orchestrator.emit(Event.KEYS_PRESSED, pygame.key.get_pressed())
             self.logic_clock.tick(APP_DATA.get("clocks", {}).get("logic", 100))
-
