@@ -95,4 +95,3 @@ class Palette:
         true_hue = round(h * 360.0)
         (r, g, b) = colorsys.hsv_to_rgb(self.hues.get(true_hue, true_hue) / 360.0, l, v)
         return (round(r), round(g), round(b))
-

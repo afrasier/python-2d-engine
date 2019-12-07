@@ -58,4 +58,3 @@ class Window:
 
             pygame.display.flip()
             self.clock.tick(60)  # Max out at 60 FPS
-
