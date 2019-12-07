@@ -1,6 +1,7 @@
 APP_DATA = {
     "name": "Vengeance Pact",
     "version": "0.0.1",
+    "clocks": {"logic": 100, "rendering": 60},
 }
 
 LOGGING = {
@@ -13,9 +14,6 @@ LOGGING = {
         "simple": {"format": "%(asctime)s - [%(levelname)-7s - %(module)s] %(name)s: %(message)s"},
     },
     "handlers": {"console": {"level": "DEBUG", "class": "logging.StreamHandler", "formatter": "simple",},},
-    "root": {"handlers": ["console"], "level": "DEBUG", "formatter": "verbose",},
-    "loggers": {
-        "console": {"handlers": ["console"], "level": "INFO", "propagate": True,},
-        "events.orchestrator": {"level": "INFO"},
-    },
+    "root": {"handlers": ["console"], "level": "INFO", "formatter": "verbose",},
+    "loggers": {"console": {"handlers": ["console"], "level": "INFO", "propagate": True,},},
 }

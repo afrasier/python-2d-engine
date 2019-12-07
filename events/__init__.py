@@ -2,6 +2,7 @@ import pygame
 
 from enum import Enum
 from events.orchestrator import Orchestrator
+from events.chronoorchestrator import ChronoOrchestrator
 
 
 class Event(Enum):

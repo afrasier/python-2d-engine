@@ -33,15 +33,21 @@ class Layer:
         if renderable_id in self.renderables:
             del self.renderables[renderable_id]
 
+    def get_renderable_position(self, viewport_position: Position, renderable: Renderable) -> Tuple[float, float]:
+        """
+        Calculates a renderable's position on the screen based upon viewport position and layer scaling
+        """
+        return (
+            renderable.position.x - (viewport_position.x * self.motion_scale[0]),
+            renderable.position.y - (viewport_position.y * self.motion_scale[1]),
+        )
+
     def blit(self, viewport_position: Position, surface: pygame.Surface) -> None:
         """
         Renders this layer's renderables onto the given surface
         """
         for renderable in self.renderables.values():
-            rendering_position = (
-                renderable.position.x - (viewport_position.x * self.motion_scale[0]),
-                renderable.position.y - (viewport_position.y * self.motion_scale[1]),
-            )
+            rendering_position = self.get_renderable_position(viewport_position, renderable)
 
             # Since this rendering position would mark the top left of the renderable, we can do a quick
             # check to see if the rendering position > surface width/height

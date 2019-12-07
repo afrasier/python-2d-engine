@@ -32,6 +32,17 @@ def main():
 
     logger.info("Configured logger")
 
+    if args.log_level:
+        logger.info(f"Overriding logger level: {args.log_level}")
+        if args.log_level == "INFO":
+            logger.setLevel(logging.INFO)
+        if args.log_level == "DEBUG":
+            logger.setLevel(logging.DEBUG)
+        if args.log_level == "WARNING":
+            logger.setLevel(logging.WARNING)
+        if args.log_level == "ERROR":
+            logger.setLevel(logging.ERROR)
+
     if args.dev_demo:
         logger.info(f"Dev demo option {args.dev_demo} selected")
         demo = DEV_DEMOS.get(args.dev_demo, False)
