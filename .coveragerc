@@ -1,6 +1,8 @@
 [run]
 omit = 
+    devdemos/*
     settings/config.py
+    interface/window.py
     main.py
 
 [report]
