@@ -4,7 +4,7 @@ import sys
 
 from settings.config import APP_DATA
 from interface import Viewport
-from events import Event, Orchestrator
+from events import Event, Orchestrator, ChronoOrchestrator
 from threading import Thread
 
 
@@ -30,6 +30,7 @@ class Window:
         pygame.display.set_caption(title)
 
         self.orchestrator: Orchestrator = Orchestrator.get_instance()
+        self.chronoorchestrator: ChronoOrchestrator = ChronoOrchestrator.get_instance()
         self.render_clock: pygame.time.Clock = pygame.time.Clock()
         self.logic_clock: pygame.time.Clock = pygame.time.Clock()
 
@@ -42,6 +43,9 @@ class Window:
         self.logic_thread.start()
 
     def close(self) -> None:
+        """
+        Close the window gracefully
+        """
         self.logger.info("Gracefully shutting down...")
 
         self.render_thread.join()
@@ -83,4 +87,5 @@ class Window:
 
             # Broadcast all currently held down keys
             self.orchestrator.emit(Event.KEYS_PRESSED, pygame.key.get_pressed())
+            self.chronoorchestrator.update()
             self.logic_clock.tick(APP_DATA.get("clocks", {}).get("logic", 100))
