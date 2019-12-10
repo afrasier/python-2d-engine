@@ -3,6 +3,8 @@ import abc
 from abc import ABC, abstractmethod, abstractproperty
 from interface import Position
 
+from typing import List
+
 
 class Renderable(ABC):
     """

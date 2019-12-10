@@ -36,6 +36,10 @@ class Palette:
     def __init__(self, hues: Dict[int, int], tolerance: int = 3):
         """
         Specify a tolerance to give some wiggle room to the math
+
+        
+        : param hues: A dictionary map of source hue -> target hue
+        : param tolerance: An integer representing the tolerance level for source
         """
         self.hues: Dict[int, int] = hues
         self.tolerance: int = tolerance

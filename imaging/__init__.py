@@ -1,6 +1,7 @@
 from typing import List
 from imaging.palette import Palette
 from imaging.spritesheet import Spritesheet
+from imaging.sprites import AnimatedSprite
 
 from enum import Enum
 
