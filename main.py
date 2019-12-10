@@ -21,6 +21,7 @@ def main():
     # Set up our argument parser for handing command line options
     parser = argparse.ArgumentParser(description=f"{config.APP_DATA.get('name')} - v{config.APP_DATA.get('version')}")
     parser.add_argument("-ll", "--log-level", help="Set the default log level")
+    parser.add_argument("-le", "--log-events", action="store_true", help="Log events")
     parser.add_argument("-dd", "--dev-demo", help="Run the specified dev demo", choices=DEV_DEMOS.keys())
 
     args = parser.parse_args()
@@ -42,6 +43,10 @@ def main():
             logger.setLevel(logging.WARNING)
         if args.log_level == "ERROR":
             logger.setLevel(logging.ERROR)
+
+    if args.log_events:
+        logger.info(f"Setting log events to {args.log_events}")
+        config.SETTINGS["logging"]["events"] = True
 
     if args.dev_demo:
         logger.info(f"Dev demo option {args.dev_demo} selected")

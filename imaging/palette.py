@@ -48,7 +48,7 @@ class Palette:
                     target_hue = self.hues.get(hue) - (hue - tolerated_hue)
                     self.hues[tolerated_hue % 360] = target_hue % 360
 
-    def paint_image(self, image: pygame.Surface) -> pygame.Surface:  # pragma: no cover
+    def paint_image(self, image: pygame.Surface) -> pygame.Surface:
         """
         Paints the source image with this palette, returning a new surface
         """

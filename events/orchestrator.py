@@ -8,6 +8,7 @@ Subscribe an instance to an event stream:
     orchestrator.subscribe("event_name", instance, instance.callback)
 """
 import logging
+
 from typing import Dict, Callable
 
 
