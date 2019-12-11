@@ -1,9 +1,34 @@
 import pygame
 
 from interface.renderable import Renderable
+from interface import ANCHORS
 from threading import Thread
 
 from typing import List
+
+
+class Sprite(Renderable):
+    """
+    Sprite represents a sprite
+    """
+
+    def __init__(self, image: pygame.Surface, anchor: ANCHORS = ANCHORS.TOP_LEFT):
+        """
+        Creates an animated sprite
+
+        :param image: An image for this sprite
+        :param anchor: The anchor position for this sprite image
+        """
+        self._surface = image
+        self._anchor = anchor
+
+    @property
+    def surface(self) -> pygame.Surface:
+        return self._surface
+
+    @property
+    def anchor(self) -> ANCHORS:
+        return self._anchor
 
 
 class AnimatedSprite(Renderable):

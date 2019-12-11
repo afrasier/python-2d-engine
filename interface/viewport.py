@@ -1,7 +1,7 @@
 import pygame
 
 from enum import IntEnum
-from interface import Position
+from interface import Position, ANCHORS
 from interface.renderable import Renderable
 
 from typing import Dict, List, Tuple
@@ -37,9 +37,34 @@ class Layer:
         """
         Calculates a renderable's position on the screen based upon viewport position and layer scaling
         """
+        width = renderable.surface.get_width()
+        height = renderable.surface.get_height()
+        half_width = width / 2
+        half_height = height / 2
+
+        anchor_offset = [0, 0]
+
+        # Most used first for optimization
+        if renderable.anchor == ANCHORS.BOTTOM_CENTER:
+            anchor_offset = [half_width, height]
+        elif renderable.anchor == ANCHORS.CENTER:
+            anchor_offset = [half_width, half_height]
+        elif renderable.anchor == ANCHORS.TOP_CENTER:
+            anchor_offset = [half_width, 0]
+        elif renderable.anchor == ANCHORS.CENTER_LEFT:
+            anchor_offset = [0, half_height]
+        elif renderable.anchor == ANCHORS.CENTER_RIGHT:
+            anchor_offset = [width, half_height]
+        elif renderable.anchor == ANCHORS.TOP_RIGHT:
+            anchor_offset = [width, 0]
+        elif renderable.anchor == ANCHORS.BOTTOM_LEFT:
+            anchor_offset = [0, height]
+        elif renderable.anchor == ANCHORS.BOTTOM_RIGHT:
+            anchor_offset = [width, height]
+
         return (
-            renderable.position.x - (viewport_position.x * self.motion_scale[0]),
-            renderable.position.y - (viewport_position.y * self.motion_scale[1]),
+            renderable.position.x - (viewport_position.x * self.motion_scale[0]) - anchor_offset[0],
+            renderable.position.y - (viewport_position.y * self.motion_scale[1]) - anchor_offset[1],
         )
 
     def blit(self, viewport_position: Position, surface: pygame.Surface) -> None:
