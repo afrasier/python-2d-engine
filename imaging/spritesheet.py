@@ -82,8 +82,8 @@ class Spritesheet:
             row_alpha: int = np.sum(subarray)
             target_alpha: int = subarray.shape[0] * break_coefficient
 
-            if row_alpha == target_alpha:
-                # We are on a "break line"
+            if row_alpha == target_alpha or i == (shape - 1):
+                # We are on a "break line" or the last line
                 if region_start == i:
                     # We've only moved 1 line down, i.e. in a "break block"
                     region_start = i + 1  # Our image begins on the NEXT line
