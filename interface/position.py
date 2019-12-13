@@ -21,3 +21,9 @@ class Position:
         Returns a copy of this position shifted by a specified amount in x, y
         """
         return Position(self.x + x, self.y + y)
+
+    def __str__(self) -> str:  # pragma: no cover
+        """
+        Returns the string representation of the position
+        """
+        return f"({self.x}, {self.y})"

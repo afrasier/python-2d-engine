@@ -12,8 +12,6 @@ def pixel_values():
     """
     Baseline pixel array fixture
     """
-    pygame.init()
-
     key_hues = [240, 200, 160, 100]
     key_hues = [list(PaletteColor(kh).rgb) for kh in key_hues]
 

@@ -89,11 +89,15 @@ class Spritesheet:
                     region_start = i + 1  # Our image begins on the NEXT line
                 else:
                     # We're on a line >1 away from our region start, so our intervening lines are our image
-                    region_end = i - 1
+                    region_end = i  # We do not subtract 1 here because numpy slices are non-inclusive on the end
+
+                    if region_end == (shape - 1):
+                        # We've hit the end of the file, so to include the last line we bump up
+                        region_end = shape
 
                 if region_end is not None:
                     # We've identified a start and end region
-                    logger.debug(f"Slicing region ({directionality}): {region_start} to {region_end}")
+                    logger.debug(f"Slicing region ({directionality}): [{region_start}, {region_end})")
                     new_alphas = None
                     if by_cols:
                         new_alphas = alphas[region_start:region_end]
@@ -101,7 +105,7 @@ class Spritesheet:
                         new_alphas = alphas[:, region_start:region_end]
 
                     # Check they're not all transparent
-                    if np.sum(new_alphas) == 0:
+                    if np.sum(new_alphas) == 0:  # pragma: no cover
                         logger.debug(f"Region is empty, skipping...")
                     else:
                         new_pixels = None
@@ -119,7 +123,7 @@ class Spritesheet:
 
                         slices.append(row_surface)
 
-                    region_start = region_end + 2  # +1 to get to the break line, +1 to jump to next viable region
+                    region_start = region_end
                     region_end = None
 
         logger.info(f"Spritesheet sliced into {len(slices)} {directionality}")
