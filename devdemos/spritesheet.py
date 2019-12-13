@@ -86,4 +86,3 @@ def dev_spritesheet():
     # front_layer.add_renderable(guy)
     # back_layer.add_renderable(background)
     # medback_layer.add_renderable(clouds)
-

@@ -86,4 +86,3 @@ class AnimatedSprite(Renderable):
         while self.animating:
             self.current_frame = (self.current_frame + 1) % self.frame_count
             self.clock.tick(self.frame_data[self.current_frame % len(self.frame_data)])  # Wait for our framedata spec
-

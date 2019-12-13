@@ -2,6 +2,7 @@
 omit = 
     devdemos/*
     settings/*
+    *test*
     interface/window.py
     main.py
 

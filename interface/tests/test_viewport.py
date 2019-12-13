@@ -86,3 +86,4 @@ def test_viewport():
     # Try blitting
     vp.add_layer(5, layer)
     vp.blit(ms)
+

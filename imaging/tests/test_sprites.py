@@ -24,6 +24,13 @@ def test_sprite():
     assert sprite.anchor == Anchor.TOP_LEFT
 
 
+def test_animated_sprite_default_framedata():
+    frames = [pygame.surface.Surface((1, 1)), pygame.surface.Surface((2, 2))]
+    sprite = SimpleAnimatedSprite(frames)
+
+    assert sprite.frame_data == [10]
+
+
 def test_animated_sprite():
     frames = [pygame.surface.Surface((1, 1)), pygame.surface.Surface((2, 2))]
     sprite = SimpleAnimatedSprite(frames, [1])
@@ -42,4 +49,3 @@ def test_animated_sprite():
 
     assert sprite.surface.get_width() == 1
     assert sprite.current_frame == 0
-

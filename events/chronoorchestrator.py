@@ -69,8 +69,8 @@ class ChronoOrchestrator:
             if delta.total_seconds() >= 0:
                 registrant = self.registry.pop(0)
                 try:
-                    registrant[2](**registrant[3], **registrant[4])
-                except Exception as e:
+                    registrant[2](*registrant[3], **registrant[4])
+                except Exception as e:  # pragma: no cover
                     self.logger.error(f"Error while executing registrant:\n\t{registrant}\n\t{e}")
             else:
                 break
