@@ -9,25 +9,15 @@ Subscribe an instance to an event stream:
 """
 import logging
 
+from common import Singleton
+
 from typing import Dict, Callable
 
 
-class Orchestrator:
+class Orchestrator(Singleton):
     """
     Manages events among all modules.
     """
-
-    SINGLETON = None
-
-    @staticmethod
-    def get_instance(fresh: bool = False) -> "Orchestrator":
-        """
-        Returns a singleton of the eventmanager
-        """
-        if not Orchestrator.SINGLETON or fresh:
-            Orchestrator.SINGLETON = Orchestrator()
-
-        return Orchestrator.SINGLETON
 
     def __init__(self) -> None:
         """

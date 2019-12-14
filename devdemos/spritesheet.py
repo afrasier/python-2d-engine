@@ -75,6 +75,8 @@ def dev_spritesheet():
     sheet: List[List[pygame.Surface]] = Spritesheet.fully_slice_file(
         "assets/testing/img/sheet_robot.png", Spritesheet.BREAK_COEFFICIENT_TRANSPARENT
     )
+    for row in sheet:
+        print([(x.get_width(), x.get_height()) for x in row])
     renderables: List[DemoRenderable] = [DemoRenderable(row, [10]) for row in sheet if len(row) != 0]
     for renderable in renderables:
         window.orchestrator.subscribe(Event.KEYS_PRESSED, renderable, renderable.handle_keypressed)

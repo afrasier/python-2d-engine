@@ -81,17 +81,16 @@ class Spritesheet:
 
             row_alpha: int = np.sum(subarray)
             target_alpha: int = subarray.shape[0] * break_coefficient
-
             if row_alpha == target_alpha or i == (shape - 1):
                 # We are on a "break line" or the last line
-                if region_start == i:
+                if region_start == i and i != (shape - 1):  # corner case if our region begins on the last line
                     # We've only moved 1 line down, i.e. in a "break block"
                     region_start = i + 1  # Our image begins on the NEXT line
                 else:
                     # We're on a line >1 away from our region start, so our intervening lines are our image
-                    region_end = i  # We do not subtract 1 here because numpy slices are non-inclusive on the end
+                    region_end = i
 
-                    if region_end == (shape - 1):
+                    if region_end == (shape - 1) and row_alpha != target_alpha:
                         # We've hit the end of the file, so to include the last line we bump up
                         region_end = shape
 
@@ -123,7 +122,7 @@ class Spritesheet:
 
                         slices.append(row_surface)
 
-                    region_start = region_end
+                    region_start = region_end + 1
                     region_end = None
 
         logger.info(f"Spritesheet sliced into {len(slices)} {directionality}")

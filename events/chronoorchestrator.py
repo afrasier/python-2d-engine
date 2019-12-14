@@ -7,6 +7,8 @@ Items are added to a registry list, in the form of
 """
 import logging
 
+from common import Singleton
+
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
@@ -14,22 +16,10 @@ from dateutil.relativedelta import relativedelta
 from typing import List, Tuple, Callable, Dict
 
 
-class ChronoOrchestrator:
+class ChronoOrchestrator(Singleton):
     """
     As Orchestrator, but triggered based upon the progress of time
     """
-
-    SINGLETON = None
-
-    @staticmethod
-    def get_instance(fresh: bool = False) -> "ChronoOrchestrator":
-        """
-        Returns a singleton of the eventmanager
-        """
-        if not ChronoOrchestrator.SINGLETON or fresh:
-            ChronoOrchestrator.SINGLETON = ChronoOrchestrator()
-
-        return ChronoOrchestrator.SINGLETON
 
     def __init__(self) -> None:
         """

@@ -15,7 +15,7 @@ def mixin_sprite():
             super().__init__(*args, **kwargs)
             self.click_count = 0
 
-        def _ClickAwareMixin__handle_click(self, event):
+        def _handle_click(self, event):
             self.click_count = self.click_count + 1
 
         @property
