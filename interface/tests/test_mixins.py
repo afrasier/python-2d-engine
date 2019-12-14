@@ -51,4 +51,3 @@ def test_hover(mixin_sprite, freezer, move_pos, is_hovered):
         if is_hovered:
             freezer.move_to("2019-01-01 12:00:10")
             assert (datetime.now() - mixin_sprite.time_hovered).seconds == 10
-
