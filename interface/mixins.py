@@ -43,6 +43,8 @@ class ClickAwareMixin(ABC):
     def __handle_click(self, event: pygame.event.Event) -> None:
         """
         Handle a click event
+
+        When implementing, will need to use _ClickAwareMixin__handle_click 
         """
         raise NotImplementedError
 
@@ -86,13 +88,13 @@ class HoverAwareMixin(ABC):
         """
         Returns true if is hovered, otherwise false
         """
-        if not hasattr(self, "__is_hovered"):
+        if not hasattr(self, "_HoverAwareMixin__is_hovered"):  # Why this? Name mangling
             self.__is_hovered = False
 
         return self.__is_hovered
 
     @property
-    def get_time_hovered(self) -> datetime:
+    def time_hovered(self) -> datetime:
         """
         Returns the datetime of when this object was set to hovered. Returns None if it is not hovered
         """
