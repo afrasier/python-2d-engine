@@ -1,3 +1,5 @@
+import pygame
+
 from interface import Viewport, Position, Layer
 from interface.renderable import Renderable
 
@@ -44,7 +46,7 @@ def test_layer_add_remove():
 
 def test_layer_scaling():
     layer: Layer = Layer(motion_scale=(2, -2))
-    dr = DemoRenderable(None)
+    dr = DemoRenderable(pygame.surface.Surface((10, 10)))
 
     ms = MockSurface((-10, 10))
 
@@ -56,7 +58,7 @@ def test_viewport():
     vp = Viewport()
 
     layer: Layer = Layer(motion_scale=(2, -2))
-    dr = DemoRenderable(None)
+    dr = DemoRenderable(pygame.surface.Surface((10, 10)))
 
     ms = MockSurface((-10, 10))
 

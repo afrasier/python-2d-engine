@@ -36,6 +36,10 @@ class Palette:
     def __init__(self, hues: Dict[int, int], tolerance: int = 3):
         """
         Specify a tolerance to give some wiggle room to the math
+
+        
+        : param hues: A dictionary map of source hue -> target hue
+        : param tolerance: An integer representing the tolerance level for source
         """
         self.hues: Dict[int, int] = hues
         self.tolerance: int = tolerance
@@ -48,7 +52,7 @@ class Palette:
                     target_hue = self.hues.get(hue) - (hue - tolerated_hue)
                     self.hues[tolerated_hue % 360] = target_hue % 360
 
-    def paint_image(self, image: pygame.Surface) -> pygame.Surface:  # pragma: no cover
+    def paint_image(self, image: pygame.Surface) -> pygame.Surface:
         """
         Paints the source image with this palette, returning a new surface
         """

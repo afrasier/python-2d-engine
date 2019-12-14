@@ -1,7 +1,8 @@
 [run]
 omit = 
     devdemos/*
-    settings/config.py
+    settings/*
+    *test*
     interface/window.py
     main.py
 
