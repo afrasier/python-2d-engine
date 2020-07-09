@@ -7,9 +7,9 @@ from devdemos import DEV_DEMOS
 from settings import config
 
 """
-VENGEANCE PACT 
+Python 2d Engine
 
-A Darkest Dungeon-like game inspired by the Stormlight Archive by Brandon Sanders
+What started as a game has morphed into its own thing
 """
 
 """
