@@ -1,3 +1,5 @@
+![Python application](https://github.com/afrasier/python-2d-engine/workflows/Python%20application/badge.svg)
+
 # Python 2D Engine
 Started out as a game, but programming the utilities around pygame became its own thing. Eventually (TM) I will get around to using this for an actual game.
 
