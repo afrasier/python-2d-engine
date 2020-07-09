@@ -1,5 +1,5 @@
 APP_DATA = {
-    "name": "Vengeance Pact",
+    "name": "Python 2d Engine",
     "version": "0.0.1",
     "clocks": {"logic": 100, "rendering": 60},
 }
